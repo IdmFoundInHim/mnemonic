@@ -6,86 +6,79 @@
 	  from 1 below (length alternating-keys-values)
 	  by 2
 	  collect `(setf (gethash ,(elt alternating-keys-values (- index-value 1)) *transcription*)
+			 ;;;; Future addition: handle lists of keys for duplicate values
 			 ,(elt alternating-keys-values index-value)))))
 
 (populate-transcription-table
- #\j #\U+05d0
- #\b #\U+05d1
- #\g #\U+05d2
- #\d #\U+05d3
- #\h #\U+05d4
- #\v #\U+05d5
- #\z #\U+05d6
- #\H #\U+05d7
- #\c #\U+05d8
- #\y #\U+05d9
- #\k #\U+05db
- #\l #\U+05dc
- #\m #\U+05de
- #\n #\U+05e0
- #\s #\U+05e1
- #\J #\U+05e2
- #\f #\U+05e4
- #\x #\U+05e6
- #\q #\U+05e7
- #\r #\U+05e8
- #\w #\U+fb2a
- #\R #\U+fb2b
- #\t #\U+05ea
+ #\j #.(code-char 1488)
+ #\b #.(code-char 1489)
+ #\g #.(code-char 1490)
+ #\d #.(code-char 1491)
+ #\h #.(code-char 1492)
+ #\v #.(code-char 1493)
+ #\z #.(code-char 1494)
+ #\H #.(code-char 1495)
+ #\c #.(code-char 1496)
+ #\y #.(code-char 1497)
+ #\k #.(code-char 1499)
+ #\l #.(code-char 1500)
+ #\m #.(code-char 1502)
+ #\n #.(code-char 1504)
+ #\s #.(code-char 1505)
+ #\J #.(code-char 1506)
+ #\f #.(code-char 1508)
+ #\x #.(code-char 1510)
+ #\q #.(code-char 1511)
+ #\r #.(code-char 1512)
+ #\w #.(code-char 64298)
+ #\R #.(code-char 64299)
+ #\t #.(code-char 1514)
 
- #\B #\U+fb31
- #\G #\U+fb32
- #\D #\U+fb33
- ";h" #\U+fb34
- #\V #\U+fb35
- "vO" #\U+fb4b
- #\Z #\U+fb36
- #\C #\U+fb38
- #\Y #\U+fb39
- #\K #\U+fb3b
- "k " #\U+05da
- "K " #\U+fb3a
- #\L #\U+fb3c
- #\M #\U+fb3e
- "m " #\U+05dd
- ;;;; "M " #\U+fb3d
- #\N #\U+fb40
- "n " #\U+05df
- ;;;; "N " #\U+fb3f
- #\S #\U+fb41
- #\F #\U+fb44
- ;;;; May be good to add duplicates, so that
- ;;;; (#\F #\p) #\U+fb44
- ;;;; would work
- #\p  #\U+fb44
- "f " #\U+05e3
- "p " #\U+fb43
- "F " #\U+fb43
- #\X #\U+fb46
- "x " #\U+05e5
- ;;;; "X " #\U+fb45
- #\Q #\U+fb47
- #\W #\U+fb2c
- ";R" #\U+fb2d
- #\T #\U+fb4a
+ #\B #.(code-char 64305)
+ #\G #.(code-char 64306)
+ #\D #.(code-char 64307)
+ ";h" #.(code-char 64308)
+ #\V #.(code-char 64309)
+ "vO" #.(code-char 64331)
+ #\Z #.(code-char 64310)
+ #\C #.(code-char 64312)
+ #\Y #.(code-char 64313)
+ #\K #.(code-char 64315)
+ "k " #.(code-char 1498)
+ "K " #.(code-char 64314)
+ #\L #.(code-char 64316)
+ #\M #.(code-char 64318)
+ "m " #.(code-char 1501)
+ #\N #.(code-char 64320)
+ "n " #.(code-char 1503)
+ #\S #.(code-char 64321)
+ #\F #.(code-char 64324)
+ #\p #.(code-char 64324)
+ "f " #.(code-char 1507)
+ "p " #.(code-char 64323)
+ "F " #.(code-char 64323)
+ #\X #.(code-char 64326)
+ "x " #.(code-char 1509)
+ #\Q #.(code-char 64327)
+ #\W #.(code-char 64300)
+ ";R" #.(code-char 64301)
+ #\T #.(code-char 64330)
 
+ #\; #.(code-char 1456)
+ ";e" #.(code-char 1457)
+ ";a" #.(code-char 1458)
+ ";o" #.(code-char 1459)
+ #\i #.(code-char 1460)
+ #\E #.(code-char 1461)
+ #\e #.(code-char 1462)
+ #\a #.(code-char 1463)
+ #\A #.(code-char 1464)
+ #\O #.(code-char 1465)
+ #\u #.(code-char 1467)
+ #\I #.(format nil "~a~a" (code-char 1460) (code-char 1497))
 
- #\; #\U+05b0
- ";e" #\U+05b1
- ";a" #\U+05b2
- ";o" #\U+05b3
- #\i #\U+05b4
- #\E #\U+05b5
- #\e #\U+05b6
- #\a #\U+05b7
- #\A #\U+05b8
- #\O #\U+05b9
- #\u #\U+05bb
-
- #\I (format nil "~a~a" #\U+05b4 #\U+05d9)
-
- ":d" #\U+05bc
- ":m" #\U+05bc
+ ":d" #.(code-char 1468)
+ ":m" #.(code-char 1468)
  ": " "")
 
 (defun +nil (&rest cardinals)
