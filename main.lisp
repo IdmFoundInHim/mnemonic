@@ -1,3 +1,5 @@
+(in-package :idmfoundinhim.mnemonic-transcription)
+
 (defparameter *transcription* (make-hash-table :test #'equal))
 
 (defmacro populate-transcription-table (&rest alternating-keys-values)
