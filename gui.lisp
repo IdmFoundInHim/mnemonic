@@ -18,4 +18,5 @@
 
 (define-slot (mnemonic input-changed) ()
   (declare (connected input (text-changed)))
-  (setf (q+:plain-text output) (transcription-reigon-handling (format nil "::~a" (q+:text input)))))
+  (setf (q+:plain-text output) (transcription-reigon-handling (format nil "::~a" (q+:to-plain-text input)))))
+
