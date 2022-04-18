@@ -4,15 +4,15 @@
 (define-widget mnemonic (QWidget)
   ())
 
-(define-subwidget (mnemonic input) (q+:make-qlineedit mnemonic)
+(define-subwidget (mnemonic input) (q+:make-qtextedit mnemonic)
   )
 
-(define-subwidget (mnemonic output) (q+:make-qlineedit mnemonic)
+(define-subwidget (mnemonic output) (q+:make-qtextedit mnemonic)
   (setf (q+:read-only output) t))
 
 ;; (define-subwidget (mnemonic button) (q+:make-qpushbutton "Wait" mnemonic))
 
-(define-subwidget (mnemonic layout) (q+:make-qhboxlayout mnemonic)
+(define-subwidget (mnemonic layout) (q+:make-qvboxlayout mnemonic)
   (q+:add-widget layout input)
   (q+:add-widget layout output))
 
