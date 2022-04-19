@@ -1,9 +1,7 @@
-(asdf:defsystem mnemonic
-  :depends-on (:qtools :qtcore :qtgui))
-
-(defpackage :idmfoundinhim.mnemonic-transcription
+(defpackage :idmfoundinhim.mnemonic-transcription ; main.lisp
   (:use :common-lisp)
   (:export :transcription-reigon-handling))
 
-(defpackage :idmfoundinhim.mnemonic-gui
-  (:use :cl+qt :idmfoundinhim.mnemonic-transcription))
+(defpackage :idmfoundinhim.mnemonic-gui ; gui.lisp
+  (:use :cl+qt :idmfoundinhim.mnemonic-transcription)
+  (:export :mnemonic))
