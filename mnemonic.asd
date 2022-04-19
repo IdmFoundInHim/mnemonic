@@ -10,7 +10,7 @@
     :defsystem-depends-on (:qtools)
     :components ((:file "packages")
 		 (:file "main" :depends-on ("packages"))
-		 (:file "gui" :depends-on ("gui")))
+		 (:file "gui" :depends-on ("main")))
     :build-operation "qt-program-op"
     :build-pathname "mnemonic"
     :entry-point "idmfoundinhim.mnemonic-gui:mnemonic")
