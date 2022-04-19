@@ -1,14 +1,77 @@
+#| Core functionality
+
+Exports:
+(fun) transcription-reigon-handler: takes user input as parameter, outputs
+       transcribed text
+
+Major private functions:
+(macro) populate-transcription-table: builds up hash table used for transcribing
+         text
+transcribe-string: Used by transcription-reigon-handler
+|#
+
 (in-package :idmfoundinhim.mnemonic-transcription)
 
 (defparameter *transcription* (make-hash-table :test #'equal))
 
+(defun transcribe-string (english-str)
+  "Transcribes parameter string with ability to look one character ahead"
+  ;; The output string is everything printed to the HEBREW-STReam
+  (with-output-to-string (hebrew-str)
+    ;; Uses the read-head model so that either one or two characters can be
+    ;; read at a time. Also uses buffer to limit to one hash-table lookup per
+    ;; character.
+    (let (buf (read-position 0) (end-position (length english-str)))
+      (loop while (< read-position end-position)
+	   do (if (setf buf (gethash
+			     (subseq english-str read-position
+				     (min (+ 2 read-position) end-position))
+			     *transcription*))
+		  (progn (princ buf hebrew-str) ; Appends to output string
+			 (setf read-position (+ 2 read-position)))
+		  (progn (princ (or
+				 ;; Hash table lookup returns NIL if the key is
+				 ;; not in the table
+				 (gethash (char english-str read-position)
+					  *transcription*)
+				 (char english-str read-position))
+				;; Appends to output
+				hebrew-str)
+			 (setf read-position (1+ read-position))))))))
+
+(defun transcription-reigon-handling (in-str)
+  "Breaks up alternating reigons to be transcribed and those to be skipped
+
+  Looks for double colon to designate new reigons, starts in transcribed reigon"
+  (with-output-to-string (out-str)
+    (do*
+     (;; Alternates modes of processing the substring
+      (mode #'transcribe-string (if (eq #'transcribe-string mode)
+				    (lambda (s) s) ; no transcription
+				    #'transcribe-string))
+      ;; #'subseq can handle indices up to *and including* the length of the
+      ;; string. Since the double colon is two characters long, I can safely add
+      ;; 2 to the index (which points to the first of the two colons).
+      (chars-processed 0 (+ 2 next-double-colon))
+      (next-double-colon (search "::" in-str)
+			 (search "::" in-str :start2 (+ 2 next-double-colon))))
+     ;; The loop runs as long as there is another double colon, and then
+     ;; runs one last time for the chars after the last double colon
+     ((not next-double-colon)
+      (princ (funcall mode (subseq in-str chars-processed next-double-colon))
+	     out-str))
+      (princ (funcall mode (subseq in-str chars-processed next-double-colon))
+	     out-str))))
+
 (defmacro populate-transcription-table (&rest alternating-keys-values)
+  "Automatically generates setf forms for *transcription* character mapping"
   `(progn
      ,@(loop for index-value
 	  from 1 below (length alternating-keys-values)
 	  by 2
-	  collect `(setf (gethash ,(elt alternating-keys-values (- index-value 1)) *transcription*)
-			 ;;;; Future addition: handle lists of keys for duplicate values
+	  collect `(setf (gethash ,(elt alternating-keys-values
+					(- index-value 1))
+				  *transcription*)
 			 ,(elt alternating-keys-values index-value)))))
 
 (populate-transcription-table
@@ -85,36 +148,3 @@
  ":d" #.(code-char 1468)
  ":m" #.(code-char 1468)
  ": " "")
-
-(defun +nil (&rest cardinals)
-  (loop for num in cardinals
-     if (eq nil num) return nil
-     summing num))
-
-(defun transcription-reigon-handling (in-str)
-  (with-output-to-string (out-str)
-    (let ((chars-processed 0))
-      (loop while chars-processed
-	 do (let* ((start-reigon (search "::" in-str :start2 chars-processed))
-		   (end-reigon (if start-reigon (search "::" in-str :start2 (1+ start-reigon)) nil)))
-	      (princ (subseq in-str chars-processed start-reigon) out-str)
-	      (if start-reigon (princ (transcribe-string (subseq in-str (+ 2 start-reigon) end-reigon)) out-str))
-	      (setf chars-processed (+nil 2 end-reigon)))))))
-
-(defun transcribe-string (english-str)
-  (with-output-to-string (hebrew-str)
-    (let (buf (read-position 0) (end-position (length english-str)))
-      (loop while (< read-position end-position)
-	   do (if (setf buf (gethash
-			     (subseq english-str read-position
-				     (if (> (+ 2 read-position) end-position)
-					 nil
-					 (+ 2 read-position)))
-			     *transcription*))
-		  (progn (princ buf hebrew-str)
-			 (setf read-position (+ 2 read-position)))
-		  (progn (princ
-			  (or (gethash (char english-str read-position) *transcription*)
-			      (char english-str read-position))
-			  hebrew-str)
-			 (setf read-position (1+ read-position))))))))
